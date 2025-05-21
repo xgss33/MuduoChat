@@ -1,0 +1,1 @@
+/usr/bin/g++ -g -Wl,--dependency-file=CMakeFiles/muduochat.dir/link.d CMakeFiles/muduochat.dir/src/main.cc.o CMakeFiles/muduochat.dir/src/chatserver.cc.o CMakeFiles/muduochat.dir/src/chatservice.cc.o CMakeFiles/muduochat.dir/src/db.cc.o CMakeFiles/muduochat.dir/src/usermodel.cc.o -o muduochat  -lmuduo_net -lmuduo_base -lpthread -lmysqlclient

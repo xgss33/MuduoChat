@@ -1,0 +1,10 @@
+{
+  "CMake: Configure On Open": true,
+  "CMake: Generator": "Unix Makefiles",
+  "files.associations": {
+    "string": "cpp",
+    "random": "cpp",
+    "chrono": "cpp",
+    "functional": "cpp"
+  },
+}
