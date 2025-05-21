@@ -90,6 +90,7 @@ std::unique_ptr<User> UserModel::query(int id)
     }
 
     if (mysql_stmt_store_result(stmt) != 0) {
+        mysql_stmt_free_result(stmt);
         mysql_stmt_close(stmt);
         return nullptr;
     }
@@ -101,10 +102,12 @@ std::unique_ptr<User> UserModel::query(int id)
         user->setPassword(std::string(password, passwordLength));
         user->setState(std::string(state, stateLength));
 
+        mysql_stmt_free_result(stmt);
         mysql_stmt_close(stmt);
         return user;
     }
 
+    mysql_stmt_free_result(stmt);
     mysql_stmt_close(stmt);
     return nullptr;
 }

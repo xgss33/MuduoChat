@@ -12,8 +12,8 @@ public:
     ~MySQL();
 
     bool connect();
-    bool update(std::string sql);
-    MYSQL_RES* query(std::string sql);
+    // bool update(std::string sql);
+    // MYSQL_RES* query(std::string sql);
     MYSQL* getConnection();
 
 private:

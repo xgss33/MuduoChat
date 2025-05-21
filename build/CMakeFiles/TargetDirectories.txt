@@ -1,3 +1,0 @@
-/home/ss/github/xgss33/MuduoChat/build/CMakeFiles/muduochat.dir
-/home/ss/github/xgss33/MuduoChat/build/CMakeFiles/edit_cache.dir
-/home/ss/github/xgss33/MuduoChat/build/CMakeFiles/rebuild_cache.dir

@@ -6,13 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED on)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-set(SOURCES
-    src/main.cc
-    src/chatserver.cc
-    src/chatservice.cc
-    src/db.cc
-    src/usermodel.cc
-)
+file(GLOB SOURCES "src/*.cc")
 
 add_executable(muduochat ${SOURCES})
 

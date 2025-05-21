@@ -1,6 +1,9 @@
 #include "server/chatservice.h"
 #include "public.h"
 
+#include <vector>
+#include <string>
+
 #include "muduo/base/Logging.h"
 using namespace muduo;
 
@@ -35,6 +38,13 @@ void ChatService::login(const TcpConnectionPtr& conn, json& js, Timestamp time)
                 std::lock_guard<std::mutex> lock(mtx_);
                 userConnMap_.insert({id,conn});
                 }
+                std::vector<std::string> offmessage = offlinemsgMd_.query(id);
+                if(!offmessage.empty())
+                {
+                    response["offlinemessage"] = offmessage;
+                    offlinemsgMd_.remove(id);
+                }
+                
                 user->setState("online");
                 userModel_.updateState(*user);
                 response["error"] = 0;
@@ -122,7 +132,7 @@ void ChatService::clientCloseException(const TcpConnectionPtr& conn)
 void ChatService::oneChat(const TcpConnectionPtr& conn, json& js, Timestamp time)
 {
     int toID = js["to"];
-    
+
     {
         std::lock_guard<std::mutex> lock(mtx_);
         auto it = userConnMap_.find(toID);
@@ -134,6 +144,7 @@ void ChatService::oneChat(const TcpConnectionPtr& conn, json& js, Timestamp time
     }
 
     // 存储离线消息
+    offlinemsgMd_.insert(toID, js.dump());
 }
 
 

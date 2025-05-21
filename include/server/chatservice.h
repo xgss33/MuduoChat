@@ -2,6 +2,7 @@
 #define MUDUOCHAT_INCLUDE_SERVER_CHATSERVICE_H
 
 #include "server/usermodel.h"
+#include "server/offlinemessagemodel.h"
 
 #include <unordered_map>
 #include <functional>
@@ -39,6 +40,7 @@ private:
     std::unordered_map<int, TcpConnectionPtr> userConnMap_;
     std::mutex mtx_;
     UserModel userModel_;
+    OfflineMessageModel offlinemsgMd_;
 };
 
 #endif // MUDUOCHAT_INCLUDE_SERVER_CHATSERVICE_H
