@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "muduo/base/Logging.h"
+#include <muduo/base/Logging.h>
 using namespace muduo;
 
 ChatService* ChatService::instance()
@@ -44,7 +44,20 @@ void ChatService::login(const TcpConnectionPtr& conn, json& js, Timestamp time)
                     response["offlinemessage"] = offmessage;
                     offlinemsgMd_.remove(id);
                 }
-                
+                std::vector<User> friendVec = friendModel_.query(id);
+
+                std::vector<std::string> vec;
+                for (const auto &f : friendVec)
+                {
+                    json js;
+                    js["id"] = f.getId();
+                    js["name"] = f.getName();
+                    js["state"] = f.getState();
+
+                    vec.push_back(js.dump());
+                }
+                response["friends"] = vec;
+
                 user->setState("online");
                 userModel_.updateState(*user);
                 response["error"] = 0;
@@ -153,4 +166,17 @@ ChatService::ChatService()
     msgHandlerMap_.insert({LOG_MSG, std::bind(&ChatService::login, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)});
     msgHandlerMap_.insert({REG_MES, std::bind(&ChatService::reg, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)});
     msgHandlerMap_.insert({ONE_CHAT_MSG, std::bind(&ChatService::oneChat, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)});
+    msgHandlerMap_.insert({ADD_FRIEND_MSG, std::bind(&ChatService::addFriend, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)});
+}
+
+void ChatService::reset()
+{
+    userModel_.resetState();
+}
+
+void ChatService::addFriend(const TcpConnectionPtr& conn, json& js, Timestamp time)
+{
+    int userid = js["id"];
+    int friendid = js["friendid"];
+    friendModel_.insert(userid, friendid);
 }

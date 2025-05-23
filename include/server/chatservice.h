@@ -3,6 +3,7 @@
 
 #include "server/usermodel.h"
 #include "server/offlinemessagemodel.h"
+#include "server/friendmodel.h"
 
 #include <unordered_map>
 #include <functional>
@@ -31,7 +32,8 @@ public:
     // TODO: 实现反向映射 unordered_map<TcpConnectionPtr, int>
     //       TcpConnectionPtr要作为key需要自定义哈希函数
     void clientCloseException(const TcpConnectionPtr& conn);
-    
+    void reset();
+    void addFriend(const TcpConnectionPtr& conn, json& js, Timestamp time);
     MsgHandler getHandler(int msgid);
 
 private:
@@ -41,6 +43,7 @@ private:
     std::mutex mtx_;
     UserModel userModel_;
     OfflineMessageModel offlinemsgMd_;
+    FriendModel friendModel_;
 };
 
 #endif // MUDUOCHAT_INCLUDE_SERVER_CHATSERVICE_H

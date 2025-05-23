@@ -11,6 +11,7 @@ public:
     bool insert(User& user);
     std::unique_ptr<User> query(int id);
     bool updateState(User& user);
+    bool resetState();
 };
 
 #endif // MUDUOCHAT_INCLUDE_SERVER_USERMODEL_H

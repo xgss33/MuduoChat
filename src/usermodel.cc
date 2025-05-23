@@ -147,3 +147,27 @@ bool UserModel::updateState(User& user)
     mysql_stmt_close(stmt);
     return true;
 }
+
+bool UserModel::resetState()
+{
+    MySQL mysql;
+    if(!mysql.connect()) return false;
+
+      MYSQL_STMT* stmt = mysql_stmt_init(mysql.getConnection());
+    if(!stmt) return false;
+
+    std::string sql = "UPDATE user SET state = 'offline' WHERE state = 'online'";
+    if(mysql_stmt_prepare(stmt, sql.c_str(), static_cast<unsigned long>(sql.length())) != 0)
+    {
+        mysql_stmt_close(stmt);
+        return false;
+    }
+
+    if(mysql_stmt_execute(stmt) != 0)
+    {
+        mysql_stmt_close(stmt);
+        return false;
+    }
+    mysql_stmt_close(stmt);
+    return true;
+}
